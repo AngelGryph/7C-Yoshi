@@ -1,12 +1,23 @@
-ACTION_IF %WEIDU_OS% STR_EQ "osx" BEGIN
-  COPY "BaldursGateIIEnhancedEdition.app/Contents/MacOS/BaldursGateIIEnhancedEdition" "BaldursGateIIEnhancedEdition.app/Contents/MacOS/BaldursGateIIEnhancedEdition"
+ACTION_MATCH "%WEIDU_OS%"
+WITH
+  "osx"
+  BEGIN
+    COPY "BaldursGateIIEnhancedEdition.app/Contents/MacOS/BaldursGateIIEnhancedEdition" "BaldursGateIIEnhancedEdition.app/Contents/MacOS/BaldursGateIIEnhancedEdition"
     REPLACE_TEXTUALLY CASE_SENSITIVE EXACT_MATCH "YOSHIMO" ~7C#0000~ (7)
-  BUT_ONLY
-END ELSE ACTION_IF %WEIDU_OS% STR_EQ "win32" BEGIN
-  COPY "baldur.exe" "baldur.exe"
+    BUT_ONLY_IF_IT_CHANGES
+  END
+ "win32"
+ BEGIN
+   COPY "baldur.exe" "baldur.exe"
     REPLACE_TEXTUALLY CASE_SENSITIVE EXACT_MATCH "YOSHIMO" ~7C#0000~ (7)
-  BUT_ONLY
-END ELSE BEGIN
-  COPY "BaldursGateII" "BaldursGateII"
+    BUT_ONLY_IF_IT_CHANGES
+  END
+  "unix"
+  BEGIN
+  COPY "baldursgateii" "baldursgateii"
     REPLACE_TEXTUALLY CASE_SENSITIVE EXACT_MATCH "YOSHIMO" ~7C#0000~ (7)
+    BUT_ONLY_IF_IT_CHANGES
+  END
+  DEFAULT
+    FAIL ~Don't know how to patch executable on %WEIDU_OS%!~
 END
